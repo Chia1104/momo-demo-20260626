@@ -1,3 +1,5 @@
+import { ScrollShadow } from "@heroui/react";
+
 import type { ProductGroup } from "@/lib/api-types";
 
 import { ProductCard } from "./product-card";
@@ -8,7 +10,9 @@ import { ProductCard } from "./product-card";
 export function RankingList({ group }: { group: ProductGroup }) {
   if (group.items.length === 0) return null;
   return (
-    <div className="flex snap-x [scrollbar-width:none] gap-3 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden">
+    <ScrollShadow
+      orientation="horizontal"
+      className="flex max-w-full gap-3 pb-2">
       {group.items.map((product, i) => (
         <ProductCard
           key={product.id}
@@ -17,6 +21,6 @@ export function RankingList({ group }: { group: ProductGroup }) {
           className="w-[160px] shrink-0 snap-start md:w-[180px]"
         />
       ))}
-    </div>
+    </ScrollShadow>
   );
 }
