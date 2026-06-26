@@ -28,6 +28,7 @@
     "class-variance-authority": "catalog:ui",
     "clsx": "catalog:ui",
     "dayjs": "catalog:",
+    "embla-carousel-react": "^8.6.0",
     "ky": "catalog:",
     "lucide-react": "catalog:ui",
     "react": "catalog:react-is",

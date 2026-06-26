@@ -31,7 +31,10 @@ function LivePage() {
       <SectionHeader title="直播" subtitle="momo 購物台 邊看邊買" />
 
       {data.map((stream) => (
-        <Card key={stream.id} className="overflow-hidden p-0" variant="secondary">
+        <Card
+          key={stream.id}
+          className="overflow-hidden p-0"
+          variant="secondary">
           <div className="bg-surface-secondary relative aspect-video w-full overflow-hidden">
             <img
               src={stream.cover}
