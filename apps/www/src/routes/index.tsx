@@ -1,4 +1,4 @@
-import { Avatar, Skeleton } from "@heroui/react";
+import { Avatar, ScrollShadow, Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
@@ -64,11 +64,13 @@ function HomePage() {
               </Link>
             }
           />
-          <div className="flex snap-x [scrollbar-width:none] gap-3 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden">
+          <ScrollShadow
+            orientation="horizontal"
+            className="flex max-w-full gap-3 pb-2">
             {data.dailyDeals.map((deal) => (
               <DealCard key={deal.id} deal={deal} />
             ))}
-          </div>
+          </ScrollShadow>
         </section>
       )}
 

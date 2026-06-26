@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Card, Skeleton, Typography } from "@heroui/react";
+import { Button, Skeleton, Table, Typography } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Minus, Plus, ShoppingCart, Star } from "lucide-react";
@@ -168,19 +168,29 @@ function ProductDetailPage() {
             )}
           </Button>
 
-          <Card className="p-0">
-            <h2 className="border-border border-b px-4 py-2 text-sm font-semibold">
-              商品規格
-            </h2>
-            <dl className="divide-border divide-y">
-              {product.specs.map((spec) => (
-                <div key={spec.label} className="flex px-4 py-2 text-sm">
-                  <dt className="text-muted w-24 shrink-0">{spec.label}</dt>
-                  <dd className="text-foreground">{spec.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </Card>
+          <div className="space-y-2">
+            <h2 className="text-sm font-semibold">商品規格</h2>
+            <Table aria-label="商品規格">
+              <Table.ScrollContainer>
+                <Table.Content>
+                  <Table.Header>
+                    <Table.Column isRowHeader>規格項目</Table.Column>
+                    <Table.Column>說明</Table.Column>
+                  </Table.Header>
+                  <Table.Body>
+                    {product.specs.map((spec) => (
+                      <Table.Row key={spec.label}>
+                        <Table.Cell className="text-muted">
+                          {spec.label}
+                        </Table.Cell>
+                        <Table.Cell>{spec.value}</Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table.Content>
+              </Table.ScrollContainer>
+            </Table>
+          </div>
 
           <p className="text-muted text-sm leading-relaxed">
             {product.description}

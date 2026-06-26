@@ -1,3 +1,5 @@
+import { ScrollShadow } from "@heroui/react";
+
 import type { Home } from "@/lib/api-types";
 
 /**
@@ -7,7 +9,9 @@ import type { Home } from "@/lib/api-types";
  */
 export function BannerCarousel({ banners }: { banners: Home["banners"] }) {
   return (
-    <div className="flex snap-x snap-mandatory [scrollbar-width:none] gap-3 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden">
+    <ScrollShadow
+      orientation="horizontal"
+      className="flex max-w-full gap-3 pb-2">
       {banners.map((banner) => (
         <a
           key={banner.id}
@@ -25,6 +29,6 @@ export function BannerCarousel({ banners }: { banners: Home["banners"] }) {
           </div>
         </a>
       ))}
-    </div>
+    </ScrollShadow>
   );
 }

@@ -18,7 +18,7 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="border-border bg-surface/95 sticky top-0 z-50 border-b backdrop-blur">
+    <header className="border-border bg-surface/65 sticky top-0 z-50 border-b backdrop-blur-xl">
       <div className="mx-auto flex max-w-[1200px] items-center gap-4 px-4 py-3">
         <Link to="/" className="flex shrink-0 items-center gap-1">
           <span className="bg-accent text-accent-foreground rounded-md px-2 py-1 text-lg leading-none font-black">
