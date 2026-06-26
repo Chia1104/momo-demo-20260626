@@ -1,9 +1,10 @@
 import { useState } from "react";
 
 import { Button, Skeleton, Table, Typography } from "@heroui/react";
+import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, Minus, Plus, ShoppingCart, Star } from "lucide-react";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Check, Minus, PackageX, Plus, ShoppingCart, Star } from "lucide-react";
 
 import { Price } from "@/components/commerce/price";
 import { ProductCard } from "@/components/commerce/product-card";
@@ -15,12 +16,25 @@ import { cn } from "@/lib/utils";
 import { useCartStore } from "@/stores/cart";
 
 export const Route = createFileRoute("/goods/$productId")({
-  loader: ({ params }) =>
-    getQueryClient().ensureQueryData(
-      orpc.catalog.getProduct.queryOptions({ input: { id: params.productId } })
-    ),
+  loader: async ({ params }) => {
+    try {
+      return await getQueryClient().ensureQueryData(
+        orpc.catalog.getProduct.queryOptions({
+          input: { id: params.productId },
+        })
+      );
+    } catch (error) {
+      // Surface the dedicated not-found UI for unknown products; rethrow
+      // everything else so the route error boundary can handle it.
+      if (error instanceof ORPCError && error.code === "NOT_FOUND") {
+        throw notFound();
+      }
+      throw error;
+    }
+  },
   component: ProductDetailPage,
   pendingComponent: DetailSkeleton,
+  notFoundComponent: ProductNotFound,
 });
 
 function ProductDetailPage() {
@@ -221,6 +235,33 @@ function DetailSkeleton() {
         <Skeleton className="h-8 w-3/4 rounded" />
         <Skeleton className="h-20 w-full rounded" />
         <Skeleton className="h-12 w-full rounded" />
+      </div>
+    </div>
+  );
+}
+
+function ProductNotFound() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
+      <PackageX className="text-muted h-16 w-16" />
+      <Typography type="h1" className="text-2xl font-bold">
+        找不到這個商品
+      </Typography>
+      <p className="text-muted text-sm">
+        商品可能已下架或網址有誤，看看其他熱賣商品吧！
+      </p>
+      <div className="flex gap-3">
+        <Link
+          to="/"
+          className="bg-accent text-accent-foreground rounded-md px-6 py-2 text-sm font-semibold hover:opacity-90">
+          回到首頁
+        </Link>
+        <Link
+          to="/search"
+          search={{ page: 1 }}
+          className="border-border text-foreground hover:border-accent rounded-md border px-6 py-2 text-sm font-semibold">
+          逛逛全部商品
+        </Link>
       </div>
     </div>
   );
