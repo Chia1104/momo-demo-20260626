@@ -14,6 +14,7 @@ const handler = new RPCHandler(router, {
 });
 
 api.use("/*", async (c, next) => {
+  const start = performance.now();
   const { matched, response } = await handler.handle(c.req.raw, {
     prefix: "/api/v1/rpc",
     context: {
@@ -23,6 +24,18 @@ api.use("/*", async (c, next) => {
   });
 
   if (matched) {
+    // Lightweight observability: structured per-request latency log. In a real
+    // deployment this is where we'd emit a metric / trace span instead.
+    console.info(
+      JSON.stringify({
+        scope: "rpc",
+        method: c.req.method,
+        path: new URL(c.req.url).pathname,
+        status: response.status,
+        durationMs: Math.round((performance.now() - start) * 10) / 10,
+        clientIP: c.var.clientIP,
+      })
+    );
     return c.newResponse(response.body, response);
   }
 

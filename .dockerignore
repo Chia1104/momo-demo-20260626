@@ -47,3 +47,5 @@ tests
 
 **/*/.turbo
 **/*/.cache
+
+.pnpm-store

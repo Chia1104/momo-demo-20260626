@@ -8,52 +8,130 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as IndexRouteImport } from "./routes/index";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as SearchIndexRouteImport } from './routes/search/index'
+import { Route as LiveIndexRouteImport } from './routes/live/index'
+import { Route as DiscoverIndexRouteImport } from './routes/discover/index'
+import { Route as GoodsProductIdRouteImport } from './routes/goods/$productId'
 
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const SearchIndexRoute = SearchIndexRouteImport.update({
+  id: '/search/',
+  path: '/search/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveIndexRoute = LiveIndexRouteImport.update({
+  id: '/live/',
+  path: '/live/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiscoverIndexRoute = DiscoverIndexRouteImport.update({
+  id: '/discover/',
+  path: '/discover/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoodsProductIdRoute = GoodsProductIdRouteImport.update({
+  id: '/goods/$productId',
+  path: '/goods/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
+  '/': typeof IndexRoute
+  '/goods/$productId': typeof GoodsProductIdRoute
+  '/discover/': typeof DiscoverIndexRoute
+  '/live/': typeof LiveIndexRoute
+  '/search/': typeof SearchIndexRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
+  '/': typeof IndexRoute
+  '/goods/$productId': typeof GoodsProductIdRoute
+  '/discover': typeof DiscoverIndexRoute
+  '/live': typeof LiveIndexRoute
+  '/search': typeof SearchIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/goods/$productId': typeof GoodsProductIdRoute
+  '/discover/': typeof DiscoverIndexRoute
+  '/live/': typeof LiveIndexRoute
+  '/search/': typeof SearchIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/";
-  id: "__root__" | "/";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/goods/$productId' | '/discover/' | '/live/' | '/search/'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/goods/$productId' | '/discover' | '/live' | '/search'
+  id:
+    | '__root__'
+    | '/'
+    | '/goods/$productId'
+    | '/discover/'
+    | '/live/'
+    | '/search/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
+  IndexRoute: typeof IndexRoute
+  GoodsProductIdRoute: typeof GoodsProductIdRoute
+  DiscoverIndexRoute: typeof DiscoverIndexRoute
+  LiveIndexRoute: typeof LiveIndexRoute
+  SearchIndexRoute: typeof SearchIndexRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search/': {
+      id: '/search/'
+      path: '/search'
+      fullPath: '/search/'
+      preLoaderRoute: typeof SearchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live/': {
+      id: '/live/'
+      path: '/live'
+      fullPath: '/live/'
+      preLoaderRoute: typeof LiveIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discover/': {
+      id: '/discover/'
+      path: '/discover'
+      fullPath: '/discover/'
+      preLoaderRoute: typeof DiscoverIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/goods/$productId': {
+      id: '/goods/$productId'
+      path: '/goods/$productId'
+      fullPath: '/goods/$productId'
+      preLoaderRoute: typeof GoodsProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-};
+  GoodsProductIdRoute: GoodsProductIdRoute,
+  DiscoverIndexRoute: DiscoverIndexRoute,
+  LiveIndexRoute: LiveIndexRoute,
+  SearchIndexRoute: SearchIndexRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()

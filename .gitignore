@@ -66,3 +66,5 @@ vitest.config.mts.timestamp-*.mjs
 
 .output
 *.bun-build
+
+.pnpm-store

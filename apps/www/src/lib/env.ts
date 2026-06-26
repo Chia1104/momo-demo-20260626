@@ -3,7 +3,7 @@ import * as z from "zod";
 
 export const env = createEnv({
   client: {
-    VITE_SERVICE_ENDPOINT: z.url().default("http://localhost:3001"),
+    VITE_SERVICE_ENDPOINT: z.url().default("http://localhost:3005"),
   },
   runtimeEnv: {
     VITE_SERVICE_ENDPOINT: import.meta.env.VITE_SERVICE_ENDPOINT,

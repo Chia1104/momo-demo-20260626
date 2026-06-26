@@ -1,4 +1,4 @@
-import { implement, ORPCError } from "@orpc/server";
+import { implement } from "@orpc/server";
 import { os } from "@orpc/server";
 
 import { routerContract } from "../router.contract";
