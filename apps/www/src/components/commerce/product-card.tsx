@@ -1,3 +1,4 @@
+import { Button, Card, Chip } from "@heroui/react";
 import { Link } from "@tanstack/react-router";
 import { ShoppingCart, Star } from "lucide-react";
 
@@ -15,27 +16,41 @@ interface ProductCardProps {
   className?: string;
 }
 
+/**
+ * Uses an "overlay link" pattern: the whole card is navigable via an absolutely
+ * positioned Link, while the add-to-cart Button sits above it (z-10) as a
+ * sibling — avoiding an invalid <button> nested inside an <a>.
+ */
 export function ProductCard({ product, rank, className }: ProductCardProps) {
   const add = useCartStore((s) => s.add);
 
   return (
-    <Link
-      to="/goods/$productId"
-      params={{ productId: product.id }}
+    <Card
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-md border border-[var(--border)] bg-[var(--surface)] transition-shadow hover:shadow-md",
+        "group relative flex flex-col overflow-hidden p-0 transition-shadow hover:shadow-md",
         className
       )}>
-      <div className="relative aspect-square overflow-hidden bg-[var(--surface-secondary)]">
+      <Link
+        to="/goods/$productId"
+        params={{ productId: product.id }}
+        aria-label={product.name}
+        className="absolute inset-0 z-0"
+      />
+
+      <div className="bg-surface-secondary pointer-events-none relative aspect-square overflow-hidden">
         {rank != null && (
-          <span className="absolute top-0 left-0 z-10 flex h-7 w-7 items-center justify-center bg-[#e3197b] text-sm font-bold text-white">
+          <span className="bg-accent text-accent-foreground absolute top-0 left-0 z-10 flex h-7 w-7 items-center justify-center text-sm font-bold">
             {rank}
           </span>
         )}
         {product.discountRate != null && (
-          <span className="absolute top-0 right-0 z-10 bg-[#ff5500] px-1.5 py-0.5 text-xs font-bold text-white">
+          <Chip
+            color="warning"
+            variant="primary"
+            size="sm"
+            className="absolute top-1 right-1 z-10">
             {product.discountRate}% OFF
-          </span>
+          </Chip>
         )}
         <img
           src={product.image}
@@ -57,14 +72,14 @@ export function ProductCard({ product, rank, className }: ProductCardProps) {
 
       <div className="flex flex-1 flex-col gap-1.5 p-2.5">
         {product.brand && (
-          <span className="text-xs text-[var(--muted)]">{product.brand}</span>
+          <span className="text-muted text-xs">{product.brand}</span>
         )}
-        <h3 className="line-clamp-2 min-h-[2.5rem] text-sm leading-tight text-[var(--foreground)]">
+        <h3 className="text-foreground line-clamp-2 min-h-[2.5rem] text-sm leading-tight">
           {product.name}
         </h3>
 
         {product.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1">
+          <div className="pointer-events-none flex flex-wrap gap-1">
             {product.tags.slice(0, 3).map((tag) => (
               <PromoTagBadge key={tag.type} tag={tag} />
             ))}
@@ -77,24 +92,23 @@ export function ProductCard({ product, rank, className }: ProductCardProps) {
             original={product.originalPrice}
             size="md"
           />
-          <button
-            type="button"
+          <Button
+            isIconOnly
+            size="sm"
+            variant="primary"
             aria-label="加入購物車"
-            disabled={product.soldOut}
-            onClick={(e) => {
-              e.preventDefault();
-              add(product);
-            }}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#e3197b] text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40">
+            isDisabled={product.soldOut}
+            onPress={() => add(product)}
+            className="relative z-10 rounded-full">
             <ShoppingCart className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
 
         {(product.rating != null || product.sales > 0) && (
-          <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+          <div className="text-muted flex items-center gap-2 text-xs">
             {product.rating != null && (
               <span className="flex items-center gap-0.5">
-                <Star className="h-3 w-3 fill-[#faad14] text-[#faad14]" />
+                <Star className="fill-warning text-warning h-3 w-3" />
                 {product.rating.toFixed(1)}
               </span>
             )}
@@ -104,6 +118,6 @@ export function ProductCard({ product, rank, className }: ProductCardProps) {
           </div>
         )}
       </div>
-    </Link>
+    </Card>
   );
 }

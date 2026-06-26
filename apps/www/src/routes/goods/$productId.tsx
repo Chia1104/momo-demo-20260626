@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { Button, Card, Skeleton, Typography } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Minus, Plus, ShoppingCart, Star } from "lucide-react";
@@ -8,7 +9,6 @@ import { Price } from "@/components/commerce/price";
 import { ProductCard } from "@/components/commerce/product-card";
 import { PromoTagBadge } from "@/components/commerce/promo-tag";
 import { SectionHeader } from "@/components/commerce/section-header";
-import { Shimmer } from "@/components/commerce/skeletons";
 import { orpc } from "@/lib/orpc";
 import { getQueryClient } from "@/lib/query-client";
 import { cn } from "@/lib/utils";
@@ -51,22 +51,22 @@ function ProductDetailPage() {
 
   return (
     <div className="space-y-8">
-      <nav className="text-xs text-[var(--muted)]">
-        <Link to="/" className="hover:text-[#e3197b]">
+      <nav className="text-muted text-xs">
+        <Link to="/" className="hover:text-accent">
           首頁
         </Link>
         <span className="mx-1">/</span>
         <Link
           to="/search"
           search={{ categoryId: product.categoryId, page: 1 }}
-          className="hover:text-[#e3197b]">
+          className="hover:text-accent">
           {product.categoryId}
         </Link>
       </nav>
 
       <div className="grid gap-6 md:grid-cols-[minmax(0,440px)_1fr]">
         <div className="space-y-3">
-          <div className="aspect-square overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface-secondary)]">
+          <div className="border-border bg-surface-secondary aspect-square overflow-hidden rounded-lg border">
             <img
               src={product.images[activeImage] ?? product.image}
               alt={product.name}
@@ -78,12 +78,11 @@ function ProductDetailPage() {
               <button
                 key={i}
                 type="button"
+                aria-label={`預覽圖 ${i + 1}`}
                 onClick={() => setActiveImage(i)}
                 className={cn(
                   "h-16 w-16 overflow-hidden rounded border-2",
-                  i === activeImage
-                    ? "border-[#e3197b]"
-                    : "border-[var(--border)]"
+                  i === activeImage ? "border-accent" : "border-border"
                 )}>
                 <img src={img} alt="" className="h-full w-full object-cover" />
               </button>
@@ -93,16 +92,18 @@ function ProductDetailPage() {
 
         <div className="space-y-4">
           {product.brand && (
-            <span className="text-sm text-[var(--muted)]">{product.brand}</span>
+            <span className="text-muted text-sm">{product.brand}</span>
           )}
-          <h1 className="text-xl leading-snug font-bold md:text-2xl">
+          <Typography
+            type="h1"
+            className="text-xl leading-snug font-bold md:text-2xl">
             {product.name}
-          </h1>
+          </Typography>
 
-          <div className="flex items-center gap-4 text-sm text-[var(--muted)]">
+          <div className="text-muted flex items-center gap-4 text-sm">
             {product.rating != null && (
               <span className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-[#faad14] text-[#faad14]" />
+                <Star className="fill-warning text-warning h-4 w-4" />
                 {product.rating.toFixed(1)}
               </span>
             )}
@@ -117,7 +118,7 @@ function ProductDetailPage() {
             </div>
           )}
 
-          <div className="rounded-lg bg-[var(--surface-secondary)] p-4">
+          <div className="bg-surface-secondary rounded-lg p-4">
             <Price
               value={product.price}
               original={product.originalPrice}
@@ -126,38 +127,34 @@ function ProductDetailPage() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-sm text-[var(--muted)]">數量</span>
-            <div className="flex items-center rounded-md border border-[var(--border)]">
-              <button
-                type="button"
+            <span className="text-muted text-sm">數量</span>
+            <div className="flex items-center rounded-md">
+              <Button
+                isIconOnly
+                variant="tertiary"
+                size="sm"
                 aria-label="減少"
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="flex h-9 w-9 items-center justify-center">
+                onPress={() => setQty((q) => Math.max(1, q - 1))}>
                 <Minus className="h-4 w-4" />
-              </button>
+              </Button>
               <span className="w-10 text-center text-sm">{qty}</span>
-              <button
-                type="button"
+              <Button
+                isIconOnly
+                variant="tertiary"
+                size="sm"
                 aria-label="增加"
-                onClick={() => setQty((q) => q + 1)}
-                className="flex h-9 w-9 items-center justify-center">
+                onPress={() => setQty((q) => q + 1)}>
                 <Plus className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
           </div>
 
-          <button
-            type="button"
-            disabled={product.soldOut}
-            onClick={onAdd}
-            className={cn(
-              "flex w-full items-center justify-center gap-2 rounded-md py-3 font-semibold text-white transition-colors",
-              product.soldOut
-                ? "cursor-not-allowed bg-[var(--surface-tertiary)] text-[var(--muted)]"
-                : added
-                  ? "bg-[#389e0d]"
-                  : "bg-[#e3197b] hover:opacity-90"
-            )}>
+          <Button
+            fullWidth
+            size="lg"
+            variant="primary"
+            isDisabled={product.soldOut}
+            onPress={onAdd}>
             {product.soldOut ? (
               "熱銷一空"
             ) : added ? (
@@ -169,25 +166,23 @@ function ProductDetailPage() {
                 <ShoppingCart className="h-5 w-5" /> 加入購物車
               </>
             )}
-          </button>
+          </Button>
 
-          <div className="rounded-lg border border-[var(--border)]">
-            <h2 className="border-b border-[var(--border)] px-4 py-2 text-sm font-semibold">
+          <Card className="p-0">
+            <h2 className="border-border border-b px-4 py-2 text-sm font-semibold">
               商品規格
             </h2>
-            <dl className="divide-y divide-[var(--border)]">
+            <dl className="divide-border divide-y">
               {product.specs.map((spec) => (
                 <div key={spec.label} className="flex px-4 py-2 text-sm">
-                  <dt className="w-24 shrink-0 text-[var(--muted)]">
-                    {spec.label}
-                  </dt>
-                  <dd className="text-[var(--foreground)]">{spec.value}</dd>
+                  <dt className="text-muted w-24 shrink-0">{spec.label}</dt>
+                  <dd className="text-foreground">{spec.value}</dd>
                 </div>
               ))}
             </dl>
-          </div>
+          </Card>
 
-          <p className="text-sm leading-relaxed text-[var(--muted)]">
+          <p className="text-muted text-sm leading-relaxed">
             {product.description}
           </p>
         </div>
@@ -210,12 +205,12 @@ function ProductDetailPage() {
 function DetailSkeleton() {
   return (
     <div className="grid gap-6 md:grid-cols-[minmax(0,440px)_1fr]">
-      <Shimmer className="aspect-square w-full" />
+      <Skeleton className="aspect-square w-full rounded-lg" />
       <div className="space-y-4">
-        <Shimmer className="h-6 w-1/3" />
-        <Shimmer className="h-8 w-3/4" />
-        <Shimmer className="h-20 w-full" />
-        <Shimmer className="h-12 w-full" />
+        <Skeleton className="h-6 w-1/3 rounded" />
+        <Skeleton className="h-8 w-3/4 rounded" />
+        <Skeleton className="h-20 w-full rounded" />
+        <Skeleton className="h-12 w-full rounded" />
       </div>
     </div>
   );

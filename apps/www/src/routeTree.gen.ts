@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SearchIndexRouteImport } from './routes/search/index'
 import { Route as LiveIndexRouteImport } from './routes/live/index'
 import { Route as DiscoverIndexRouteImport } from './routes/discover/index'
+import { Route as CartIndexRouteImport } from './routes/cart/index'
 import { Route as GoodsProductIdRouteImport } from './routes/goods/$productId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const DiscoverIndexRoute = DiscoverIndexRouteImport.update({
   path: '/discover/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CartIndexRoute = CartIndexRouteImport.update({
+  id: '/cart/',
+  path: '/cart/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GoodsProductIdRoute = GoodsProductIdRouteImport.update({
   id: '/goods/$productId',
   path: '/goods/$productId',
@@ -44,6 +50,7 @@ const GoodsProductIdRoute = GoodsProductIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/goods/$productId': typeof GoodsProductIdRoute
+  '/cart/': typeof CartIndexRoute
   '/discover/': typeof DiscoverIndexRoute
   '/live/': typeof LiveIndexRoute
   '/search/': typeof SearchIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/goods/$productId': typeof GoodsProductIdRoute
+  '/cart': typeof CartIndexRoute
   '/discover': typeof DiscoverIndexRoute
   '/live': typeof LiveIndexRoute
   '/search': typeof SearchIndexRoute
@@ -59,19 +67,27 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/goods/$productId': typeof GoodsProductIdRoute
+  '/cart/': typeof CartIndexRoute
   '/discover/': typeof DiscoverIndexRoute
   '/live/': typeof LiveIndexRoute
   '/search/': typeof SearchIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/goods/$productId' | '/discover/' | '/live/' | '/search/'
+  fullPaths:
+    | '/'
+    | '/goods/$productId'
+    | '/cart/'
+    | '/discover/'
+    | '/live/'
+    | '/search/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/goods/$productId' | '/discover' | '/live' | '/search'
+  to: '/' | '/goods/$productId' | '/cart' | '/discover' | '/live' | '/search'
   id:
     | '__root__'
     | '/'
     | '/goods/$productId'
+    | '/cart/'
     | '/discover/'
     | '/live/'
     | '/search/'
@@ -80,6 +96,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GoodsProductIdRoute: typeof GoodsProductIdRoute
+  CartIndexRoute: typeof CartIndexRoute
   DiscoverIndexRoute: typeof DiscoverIndexRoute
   LiveIndexRoute: typeof LiveIndexRoute
   SearchIndexRoute: typeof SearchIndexRoute
@@ -115,6 +132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoverIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cart/': {
+      id: '/cart/'
+      path: '/cart'
+      fullPath: '/cart/'
+      preLoaderRoute: typeof CartIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/goods/$productId': {
       id: '/goods/$productId'
       path: '/goods/$productId'
@@ -128,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GoodsProductIdRoute: GoodsProductIdRoute,
+  CartIndexRoute: CartIndexRoute,
   DiscoverIndexRoute: DiscoverIndexRoute,
   LiveIndexRoute: LiveIndexRoute,
   SearchIndexRoute: SearchIndexRoute,

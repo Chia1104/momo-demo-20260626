@@ -1,15 +1,22 @@
-import type { PromoTag as PromoTagType } from "@/lib/api-types";
-import { cn } from "@/lib/utils";
+import { Chip } from "@heroui/react";
 
-/** Colour treatment per promo type, mirroring momo's loud tag styling. */
-const STYLES: Record<string, string> = {
-  FLASH_SALE: "bg-[#e3197b] text-white",
-  LOWEST: "bg-[#ff5500] text-white",
-  COUPON: "bg-[#fff0f6] text-[#e3197b] border border-[#e3197b]",
-  MO_COIN: "bg-[#fff7e6] text-[#d48806] border border-[#ffd591]",
-  BUY_ONE_GET_ONE: "bg-[#f6ffed] text-[#389e0d] border border-[#b7eb8f]",
-  FREE_SHIPPING: "bg-[var(--surface-secondary)] text-[var(--muted)]",
-  NEW: "bg-[#e6f7ff] text-[#0958d9] border border-[#91caff]",
+import type { PromoTag as PromoTagType } from "@/lib/api-types";
+
+type ChipColor = "accent" | "default" | "success" | "warning" | "danger";
+type ChipVariant = "primary" | "secondary" | "tertiary" | "soft";
+
+/**
+ * Maps each promo type to a HeroUI Chip color/variant so tags inherit the
+ * theme (and stay consistent in light/dark) instead of hardcoded colors.
+ */
+const STYLES: Record<string, { color: ChipColor; variant: ChipVariant }> = {
+  FLASH_SALE: { color: "accent", variant: "primary" },
+  LOWEST: { color: "warning", variant: "primary" },
+  COUPON: { color: "accent", variant: "soft" },
+  MO_COIN: { color: "warning", variant: "soft" },
+  BUY_ONE_GET_ONE: { color: "success", variant: "soft" },
+  FREE_SHIPPING: { color: "default", variant: "soft" },
+  NEW: { color: "accent", variant: "secondary" },
 };
 
 export function PromoTagBadge({
@@ -19,14 +26,14 @@ export function PromoTagBadge({
   tag: PromoTagType;
   className?: string;
 }) {
+  const style = STYLES[tag.type] ?? { color: "default", variant: "soft" };
   return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-sm px-1.5 py-0.5 text-[11px] leading-none font-medium",
-        STYLES[tag.type] ?? "bg-[var(--surface-secondary)] text-[var(--muted)]",
-        className
-      )}>
+    <Chip
+      color={style.color}
+      variant={style.variant}
+      size="sm"
+      className={className}>
       {tag.label}
-    </span>
+    </Chip>
   );
 }

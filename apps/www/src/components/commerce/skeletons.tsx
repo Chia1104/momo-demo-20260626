@@ -1,23 +1,12 @@
-import { cn } from "@/lib/utils";
-
-function Shimmer({ className }: { className?: string }) {
-  return (
-    <div
-      className={cn(
-        "animate-pulse rounded-md bg-[var(--surface-secondary)]",
-        className
-      )}
-    />
-  );
-}
+import { Skeleton } from "@heroui/react";
 
 export function ProductCardSkeleton() {
   return (
-    <div className="flex flex-col gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] p-2.5">
-      <Shimmer className="aspect-square w-full" />
-      <Shimmer className="h-4 w-2/3" />
-      <Shimmer className="h-4 w-full" />
-      <Shimmer className="h-6 w-1/2" />
+    <div className="border-border bg-surface flex flex-col gap-2 rounded-md border p-2.5">
+      <Skeleton className="aspect-square w-full rounded-md" />
+      <Skeleton className="h-4 w-2/3 rounded" />
+      <Skeleton className="h-4 w-full rounded" />
+      <Skeleton className="h-6 w-1/2 rounded" />
     </div>
   );
 }
@@ -32,4 +21,4 @@ export function ProductGridSkeleton({ count = 10 }: { count?: number }) {
   );
 }
 
-export { Shimmer };
+export { Skeleton };

@@ -1,5 +1,6 @@
+import { Button, Pagination } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import * as z from "zod";
 
 import { ProductCard } from "@/components/commerce/product-card";
@@ -62,6 +63,8 @@ function SearchPage() {
   const { data: categories } = useQuery(orpc.category.list.queryOptions());
 
   const title = search.keyword ? `「${search.keyword}」的搜尋結果` : "全部商品";
+  const goToPage = (page: number) =>
+    navigate({ search: (p) => ({ ...p, page }) });
 
   return (
     <div className="space-y-5">
@@ -71,50 +74,49 @@ function SearchPage() {
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <FilterChip
-          active={!search.categoryId}
-          onClick={() =>
+        <Button
+          size="sm"
+          variant={!search.categoryId ? "primary" : "outline"}
+          onPress={() =>
             navigate({
               search: (p) => ({ ...p, categoryId: undefined, page: 1 }),
             })
           }>
           全部分類
-        </FilterChip>
+        </Button>
         {categories?.map((c) => (
-          <FilterChip
+          <Button
             key={c.id}
-            active={search.categoryId === c.id}
-            onClick={() =>
+            size="sm"
+            variant={search.categoryId === c.id ? "primary" : "outline"}
+            onPress={() =>
               navigate({ search: (p) => ({ ...p, categoryId: c.id, page: 1 }) })
             }>
             {c.name}
-          </FilterChip>
+          </Button>
         ))}
       </div>
 
-      <div className="flex items-center gap-2 border-b border-[var(--border)] pb-2">
+      <div className="border-border flex items-center gap-2 border-b pb-2">
         {SORT_LABELS.map((opt) => (
-          <button
+          <Button
             key={opt.value}
-            type="button"
-            onClick={() =>
-              navigate({ search: (p) => ({ ...p, sort: opt.value, page: 1 }) })
+            size="sm"
+            variant={
+              (search.sort ?? "sales") === opt.value ? "primary" : "ghost"
             }
-            className={cn(
-              "rounded-full px-3 py-1 text-sm transition-colors",
-              (search.sort ?? "sales") === opt.value
-                ? "bg-[#e3197b] text-white"
-                : "text-[var(--muted)] hover:text-[#e3197b]"
-            )}>
+            onPress={() =>
+              navigate({ search: (p) => ({ ...p, sort: opt.value, page: 1 }) })
+            }>
             {opt.label}
-          </button>
+          </Button>
         ))}
       </div>
 
       {!data ? (
         <ProductGridSkeleton count={PAGE_SIZE} />
       ) : data.items.length === 0 ? (
-        <div className="py-20 text-center text-[var(--muted)]">
+        <div className="text-muted py-20 text-center">
           找不到符合條件的商品，試試其他關鍵字。
         </div>
       ) : (
@@ -130,50 +132,36 @@ function SearchPage() {
       )}
 
       {data && data.totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-4">
-          {Array.from({ length: data.totalPages }).map((_, i) => {
-            const page = i + 1;
-            return (
-              <Link
-                key={page}
-                to="/search"
-                search={(p) => ({ ...p, page })}
-                className={cn(
-                  "flex h-9 min-w-9 items-center justify-center rounded-md border px-3 text-sm",
-                  page === data.page
-                    ? "border-[#e3197b] bg-[#e3197b] text-white"
-                    : "border-[var(--border)] text-[var(--foreground)] hover:border-[#e3197b]"
-                )}>
-                {page}
-              </Link>
-            );
-          })}
-        </div>
+        <Pagination className="justify-center pt-4">
+          <Pagination.Content>
+            <Pagination.Item>
+              <Pagination.Previous
+                isDisabled={data.page === 1}
+                onPress={() => goToPage(data.page - 1)}>
+                <Pagination.PreviousIcon />
+              </Pagination.Previous>
+            </Pagination.Item>
+            {Array.from({ length: data.totalPages }, (_, i) => i + 1).map(
+              (page) => (
+                <Pagination.Item key={page}>
+                  <Pagination.Link
+                    isActive={page === data.page}
+                    onPress={() => goToPage(page)}>
+                    {page}
+                  </Pagination.Link>
+                </Pagination.Item>
+              )
+            )}
+            <Pagination.Item>
+              <Pagination.Next
+                isDisabled={data.page === data.totalPages}
+                onPress={() => goToPage(data.page + 1)}>
+                <Pagination.NextIcon />
+              </Pagination.Next>
+            </Pagination.Item>
+          </Pagination.Content>
+        </Pagination>
       )}
     </div>
-  );
-}
-
-function FilterChip({
-  active,
-  onClick,
-  children,
-}: {
-  active?: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "rounded-full border px-3 py-1 text-sm transition-colors",
-        active
-          ? "border-[#e3197b] bg-[#fff0f6] text-[#e3197b]"
-          : "border-[var(--border)] text-[var(--muted)] hover:border-[#e3197b]"
-      )}>
-      {children}
-    </button>
   );
 }

@@ -1,11 +1,11 @@
 export function SiteFooter() {
   return (
-    <footer className="mt-12 border-t border-[var(--border)] bg-[var(--surface-secondary)]">
-      <div className="mx-auto max-w-[1200px] px-4 py-8 text-xs text-[var(--muted)]">
+    <footer className="border-border bg-surface-secondary mt-12 border-t">
+      <div className="text-muted mx-auto max-w-[1200px] px-4 py-8 text-xs">
         <div className="mb-4 flex flex-wrap gap-x-6 gap-y-2">
           {["購物說明", "會員中心", "客服中心", "隱私權政策", "服務條款"].map(
             (item) => (
-              <span key={item} className="hover:text-[#e3197b]">
+              <span key={item} className="hover:text-accent">
                 {item}
               </span>
             )

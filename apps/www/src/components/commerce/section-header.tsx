@@ -1,3 +1,5 @@
+import { Typography } from "@heroui/react";
+
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
@@ -16,13 +18,11 @@ export function SectionHeader({
   return (
     <div className={cn("mb-4 flex items-end justify-between gap-4", className)}>
       <div className="flex items-baseline gap-3">
-        <span className="h-5 w-1.5 rounded-full bg-[#e3197b]" />
-        <h2 className="text-lg font-bold text-[var(--foreground)] md:text-xl">
+        <span className="bg-accent h-5 w-1.5 rounded-full" />
+        <Typography type="h2" className="text-lg font-bold md:text-xl">
           {title}
-        </h2>
-        {subtitle && (
-          <span className="text-sm text-[var(--muted)]">{subtitle}</span>
-        )}
+        </Typography>
+        {subtitle && <span className="text-muted text-sm">{subtitle}</span>}
       </div>
       {action}
     </div>

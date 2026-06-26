@@ -112,7 +112,7 @@ pnpm db:up          # 起 Redis / Postgres（docker compose）
 pnpm dev            # 同時啟動 www(:3000) 與 service(:3005)
 ```
 
-- 前端：http://localhost:3000
+- 前端：<http://localhost:3000>
 - API（OpenAPI 形式，便於手動測試）：`POST http://localhost:3005/api/v1/rest/catalog/home`
 
 ### 測試 / 檢查
@@ -165,16 +165,3 @@ pnpm lint           # oxlint
 3. **實作**：依 schema → mock → contract → route → 前端的順序推進，每完成一層即跑 `type:check` 收斂，最後以 curl 對 service 做 end-to-end smoke test。
 
 > 維護者視角：契約（zod schema）是這個系統的核心資產。任何新功能都應「先改 contract，再讓型別推著前後端走」，而不是反過來。
-
----
-
-## 9. 後續演進方向
-
-- 將 `mocks/` 查詢層抽象為 `ProductRepository` 介面，正式後端只需提供同介面的實作即可替換。
-- contract 加上 `.route({ method, path })` metadata，讓既有的 OpenAPI handler 產出正式 REST 文件。
-- 搜尋導入 facet / 篩選聚合與 debounce（repo 已備有 `@tanstack/react-pacer`）。
-- 以 MSW 在前端做契約層級的測試與 Storybook 化商品卡（呼應題目 B 的 Card Showroom 方向）。
-
-```
-
-```

@@ -1,3 +1,4 @@
+import { Button, Spinner } from "@heroui/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -37,15 +38,20 @@ function DiscoverPage() {
           </div>
           <div className="flex justify-center pt-4">
             {hasNextPage ? (
-              <button
-                type="button"
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-                className="rounded-full border border-[#e3197b] px-6 py-2 text-sm text-[#e3197b] transition-colors hover:bg-[#fff0f6] disabled:opacity-50">
-                {isFetchingNextPage ? "載入中..." : "載入更多"}
-              </button>
+              <Button
+                variant="outline"
+                isPending={isFetchingNextPage}
+                onPress={() => fetchNextPage()}>
+                {isFetchingNextPage ? (
+                  <>
+                    <Spinner size="sm" color="current" /> 載入中...
+                  </>
+                ) : (
+                  "載入更多"
+                )}
+              </Button>
             ) : (
-              <span className="text-sm text-[var(--muted)]">已經到底囉</span>
+              <span className="text-muted text-sm">已經到底囉</span>
             )}
           </div>
         </>

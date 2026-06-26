@@ -1,10 +1,10 @@
+import { Card, Chip, Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Radio, Users } from "lucide-react";
 
 import { ProductCard } from "@/components/commerce/product-card";
 import { SectionHeader } from "@/components/commerce/section-header";
-import { Shimmer } from "@/components/commerce/skeletons";
 import { formatCount } from "@/lib/format";
 import { orpc } from "@/lib/orpc";
 import { getQueryClient } from "@/lib/query-client";
@@ -20,8 +20,8 @@ function LivePage() {
   if (isLoading || !data) {
     return (
       <div className="space-y-4">
-        <Shimmer className="aspect-video w-full" />
-        <Shimmer className="aspect-video w-full" />
+        <Skeleton className="aspect-video w-full rounded-lg" />
+        <Skeleton className="aspect-video w-full rounded-lg" />
       </div>
     );
   }
@@ -31,10 +31,8 @@ function LivePage() {
       <SectionHeader title="直播" subtitle="momo 購物台 邊看邊買" />
 
       {data.map((stream) => (
-        <section
-          key={stream.id}
-          className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]">
-          <div className="relative aspect-video w-full overflow-hidden bg-[var(--surface-secondary)]">
+        <Card key={stream.id} className="overflow-hidden p-0">
+          <div className="bg-surface-secondary relative aspect-video w-full overflow-hidden">
             <img
               src={stream.cover}
               alt={stream.title}
@@ -42,17 +40,17 @@ function LivePage() {
             />
             <div className="absolute top-3 left-3 flex items-center gap-2">
               {stream.isLive ? (
-                <span className="flex items-center gap-1 rounded-full bg-[#e3197b] px-2 py-1 text-xs font-bold text-white">
+                <Chip color="accent" variant="primary" size="sm">
                   <Radio className="h-3 w-3" /> LIVE
-                </span>
+                </Chip>
               ) : (
-                <span className="rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+                <Chip color="default" variant="primary" size="sm">
                   重播
-                </span>
+                </Chip>
               )}
-              <span className="flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+              <Chip color="default" variant="primary" size="sm">
                 <Users className="h-3 w-3" /> {formatCount(stream.viewers)}
-              </span>
+              </Chip>
             </div>
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
               <h2 className="text-lg font-bold text-white">{stream.title}</h2>
@@ -61,7 +59,7 @@ function LivePage() {
           </div>
 
           <div className="p-4">
-            <h3 className="mb-3 text-sm font-semibold text-[var(--muted)]">
+            <h3 className="text-muted mb-3 text-sm font-semibold">
               直播主打商品
             </h3>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -70,7 +68,7 @@ function LivePage() {
               ))}
             </div>
           </div>
-        </section>
+        </Card>
       ))}
     </div>
   );

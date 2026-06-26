@@ -1,3 +1,4 @@
+import { Typography } from "@heroui/react";
 import {
   Outlet,
   createRootRoute,
@@ -13,7 +14,7 @@ function Layout() {
   return (
     <RootProvider>
       <HeadContent />
-      <div className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)]">
+      <div className="bg-background text-foreground flex min-h-screen flex-col">
         <SiteHeader />
         <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-5">
           <Outlet />
@@ -28,16 +29,20 @@ export const Route = createRootRoute({
   component: Layout,
   notFoundComponent: () => (
     <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
-      <p className="text-2xl font-bold">找不到頁面</p>
-      <Link to="/" className="text-[#e3197b] hover:underline">
+      <Typography type="h2" className="text-2xl font-bold">
+        找不到頁面
+      </Typography>
+      <Link to="/" className="text-accent hover:underline">
         回到首頁
       </Link>
     </div>
   ),
   errorComponent: ({ error }) => (
     <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
-      <p className="text-2xl font-bold">發生錯誤</p>
-      <p className="text-sm text-[var(--muted)]">{error.message}</p>
+      <Typography type="h2" className="text-2xl font-bold">
+        發生錯誤
+      </Typography>
+      <p className="text-muted text-sm">{error.message}</p>
     </div>
   ),
 });

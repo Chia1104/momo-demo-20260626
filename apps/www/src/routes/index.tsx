@@ -1,3 +1,4 @@
+import { Avatar, Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
@@ -21,7 +22,7 @@ function HomePage() {
   if (isLoading || !data) {
     return (
       <div className="space-y-6">
-        <div className="aspect-[1200/420] w-full animate-pulse rounded-lg bg-[var(--surface-secondary)]" />
+        <Skeleton className="aspect-[1200/420] w-full rounded-lg" />
         <ProductGridSkeleton count={10} />
       </div>
     );
@@ -39,14 +40,11 @@ function HomePage() {
               to="/search"
               search={{ keyword: brand.name, page: 1 }}
               className="flex flex-col items-center gap-1.5 text-center">
-              <span className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border border-[var(--border)] bg-[var(--surface)]">
-                <img
-                  src={brand.logo}
-                  alt={brand.name}
-                  className="h-full w-full"
-                />
-              </span>
-              <span className="text-xs text-[var(--muted)]">{brand.name}</span>
+              <Avatar size="lg">
+                <Avatar.Image src={brand.logo} alt={brand.name} />
+                <Avatar.Fallback>{brand.name.slice(0, 2)}</Avatar.Fallback>
+              </Avatar>
+              <span className="text-muted text-xs">{brand.name}</span>
             </Link>
           ))}
         </div>
@@ -61,7 +59,7 @@ function HomePage() {
               <Link
                 to="/search"
                 search={{ sort: "sales", page: 1 }}
-                className="text-sm text-[#e3197b] hover:underline">
+                className="text-accent text-sm hover:underline">
                 看更多 ›
               </Link>
             }
@@ -80,7 +78,7 @@ function HomePage() {
           {data.rankings.slice(0, 4).map((group) => (
             <div key={group.categoryId}>
               <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-[var(--foreground)]">
+                <h3 className="text-foreground text-sm font-semibold">
                   {group.title}
                 </h3>
                 <Link
@@ -90,7 +88,7 @@ function HomePage() {
                     sort: "sales",
                     page: 1,
                   }}
-                  className="text-xs text-[var(--muted)] hover:text-[#e3197b]">
+                  className="text-muted hover:text-accent text-xs">
                   更多
                 </Link>
               </div>
@@ -105,7 +103,7 @@ function HomePage() {
         <div className="space-y-6">
           {data.newArrivals.slice(0, 3).map((group) => (
             <div key={group.categoryId}>
-              <h3 className="mb-2 text-sm font-semibold text-[var(--foreground)]">
+              <h3 className="text-foreground mb-2 text-sm font-semibold">
                 {group.title}
               </h3>
               <RankingList group={group} />
