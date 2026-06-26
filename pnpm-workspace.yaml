@@ -1,0 +1,114 @@
+packages:
+  - apps/*
+  - packages/*
+
+allowBuilds:
+  '@heroui-pro/react': true
+  '@zowe/secrets-for-zowe-sdk': false
+  esbuild: false
+  heroui-native-pro: true
+  msw: false
+  nx: false
+  sqlite3: false
+
+catalog:
+  '@internationalized/date': ^3.12.2
+  '@internationalized/number': ^3.6.7
+  '@t3-oss/env-core': ^0.13.11
+  '@types/node': 26.0.1
+  better-all: 0.0.7
+  'bignumber.js': ^11.1.4
+  bun-types: ^1.3.14
+  dayjs: ^1.11.21
+  dotenv: ^17.4.2
+  'es-toolkit': ^1.47.0
+  graphql-request: ^7.4.0
+  ky: ^2.0.2
+  superjson: 2.2.6
+  tsdown: 0.22.3
+  typescript: ^6.0.3
+  zod: 4.4.3
+
+catalogs:
+  chiastack:
+    '@chiastack/oxlint': 1.1.0
+    '@chiastack/tsconfig': 2.1.2
+  drizzle:
+    drizzle-kit: 1.0.0-rc.3
+    drizzle-orm: 1.0.0-rc.3
+    drizzle-zod: 1.0.0-rc.3
+  heroui:
+    '@heroui/react': 3.2.1
+    '@heroui/styles': 3.2.1
+    '@heroui-pro/react': 1.0.0-beta.6
+    'heroui-native': ^1.0.4
+    'heroui-native-pro': 1.0.0-beta.5
+  orpc:
+    '@orpc/client': 1.14.6
+    '@orpc/contract': 1.14.6
+    '@orpc/openapi': 1.14.6
+    '@orpc/server': 1.14.6
+    '@orpc/tanstack-query': 1.14.6
+  oxc:
+    oxfmt: 0.56.0
+    oxlint: 1.71.0
+  react-is:
+    '@types/react': ^19.2.17
+    '@types/react-dom': ^19.2.3
+    babel-plugin-react-compiler: 1.0.0
+    react: 19.2.7
+    react-dom: 19.2.7
+  tailwindcss:
+    '@tailwindcss/postcss': 4.3.1
+    "@tailwindcss/vite": 4.3.1
+    tailwindcss: 4.3.1
+    uniwind: ~1.7.0
+  tanstack:
+    '@tanstack/pacer': 0.16.3
+    '@tanstack/query-async-storage-persister': ^5.100.14
+    '@tanstack/react-pacer': 0.19.4
+    '@tanstack/react-query': 5.101.1
+    '@tanstack/react-query-devtools': 5.91.3
+    '@tanstack/react-query-persist-client': ^5.100.14
+    '@tanstack/react-router': ^1.170.16
+    '@tanstack/react-router-devtools': ^1.141.1
+    '@tanstack/react-start': ^1.141.1
+    '@tanstack/router-plugin': ^1.168.18
+  testing-library:
+    '@testing-library/jest-dom': 6.9.1
+    '@testing-library/react': 16.3.2
+    '@testing-library/user-event': 14.6.1
+    '@vitejs/plugin-react-swc': 4.2.2
+    '@vitest/coverage-v8': 4.1.9
+    '@vitest/ui': 4.1.9
+    jest-extended: 7.0.0
+    vitest: 4.1.9
+  ui:
+    '@hookform/resolvers': ^5.4.0
+    'class-variance-authority': ^0.7.1
+    clsx: ^2.1.1
+    i18next: ^26.3.0
+    'lucide-react': ^1.21.0
+    'react-hook-form': ^7.80.0
+    'react-i18next': ^17.0.8
+    'tailwind-merge': ^3.6.0
+    'tailwind-variants': ^3.2.2
+    'usehooks-ts': ^3.1.1
+    zustand: ^5.0.14
+  vite:
+    '@vitejs/plugin-react': 6.0.3
+    vite: 8.1.0
+    vite-tsconfig-paths: 5.1.4
+
+# `@hookform/resolvers/zod` (v5) statically imports `zod/v4/core` but does not
+# declare zod as a peer, so bare resolution falls back to a hoisted zod 3.x
+# (which lacks `./v4/core`). Declaring the peer makes pnpm link the importer's
+# zod 4.x instead.
+packageExtensions:
+  "@hookform/resolvers":
+    peerDependencies:
+      zod: "*"
+
+linkWorkspacePackages: true
+
+strictPeerDependencies: false

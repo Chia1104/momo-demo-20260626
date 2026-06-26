@@ -1,0 +1,37 @@
+{
+  "name": "service",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot src/server.ts",
+    "build": "bun build --compile --target=bun --minify-whitespace --minify-syntax --outfile .output/server src/server.ts",
+    "type:check": "tsc --noEmit",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
+  },
+  "dependencies": {
+    "@hono/sentry": "^1.2.2",
+    "@hono/zod-validator": "^0.8.0",
+    "@orpc/contract": "catalog:orpc",
+    "@orpc/openapi": "catalog:orpc",
+    "@orpc/server": "catalog:orpc",
+    "@repo/api": "workspace:*",
+    "@repo/kv": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "@t3-oss/env-core": "catalog:",
+    "better-all": "catalog:",
+    "dayjs": "catalog:",
+    "hono": "^4.12.27",
+    "hono-rate-limiter": "^0.5.3",
+    "ky": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@chiastack/tsconfig": "catalog:chiastack",
+    "@types/node": "catalog:",
+    "bun-types": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}
