@@ -54,6 +54,23 @@ services:
       - postgres
       - redis
 
+  www:
+    container_name: momo-demo-www
+    build:
+      context: .
+      dockerfile: apps/www/Dockerfile
+      args:
+        TURBO_TEAM: ${TURBO_TEAM:-}
+        TURBO_TOKEN: ${TURBO_TOKEN:-}
+    restart: unless-stopped
+    ports:
+      - "3000:8080"
+    environment:
+      - PORT=8080
+      - HOST=0.0.0.0
+    depends_on:
+      - service
+
 volumes:
   momo-demo-postgres:
   momo-demo-redis:
