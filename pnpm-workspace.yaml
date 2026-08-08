@@ -41,7 +41,7 @@ catalogs:
     '@heroui/react': 3.2.1
     '@heroui/styles': 3.2.1
     '@heroui-pro/react': 1.0.0-beta.6
-    'heroui-native': ^1.0.4
+    'heroui-native': ^1.0.8
     'heroui-native-pro': 1.0.0-beta.5
   orpc:
     '@orpc/client': 1.14.6
