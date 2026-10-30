@@ -59,9 +59,9 @@ catalogs:
     react: 19.2.7
     react-dom: 19.2.7
   tailwindcss:
-    '@tailwindcss/postcss': 4.3.1
-    "@tailwindcss/vite": 4.3.1
-    tailwindcss: 4.3.1
+    '@tailwindcss/postcss': 4.3.3
+    "@tailwindcss/vite": 4.3.3
+    tailwindcss: 4.3.3
     uniwind: ~1.7.0
   tanstack:
     '@tanstack/pacer': 0.16.3
